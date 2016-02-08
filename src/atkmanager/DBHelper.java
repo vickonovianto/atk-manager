@@ -40,10 +40,15 @@ public class DBHelper {
     public ResultSet runQuery(String query){
         Statement stmt = null;
         ResultSet result = null;
+       
         try {
+            if (!(stmt == null)){
+                stmt.close();
+            }
+        
             stmt = this.getConnection().createStatement();
             result = stmt.executeQuery(query);
-            stmt.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }

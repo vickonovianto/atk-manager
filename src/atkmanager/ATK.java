@@ -13,6 +13,11 @@ public class ATK {
         this.number = number;
     }
     
+   public String[] toArray(){
+       String[] arr = {name, Integer.toString(number)};
+       return arr;
+   }
+    
     public int getNumber() {
         return number;
     }

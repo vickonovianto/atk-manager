@@ -5,19 +5,108 @@
  */
 package atkmanager;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author adinb
  */
 public class ATKManager extends javax.swing.JFrame {
 
+    private Display display;
+    private DefaultTableModel model;
+    
     /**
      * Creates new form MainForm
      */
     public ATKManager() {
         initComponents();
+        display = new Display();
+        refreshTable();
     }
-
+    
+    public final void refreshTable(){
+        // ATK
+        model = (DefaultTableModel) atkTable.getModel();
+        for (int i=0;i<model.getRowCount();i++){    
+            model.removeRow(i);
+        }
+        addATKToTable(display.getAtkList());
+        
+        // User
+        model = (DefaultTableModel) userTable.getModel();
+        for (int i=0;i<model.getRowCount();i++){    
+            model.removeRow(i);
+        }
+        addUserToTable(display.getUserList());
+        
+        // Supplier
+        model = (DefaultTableModel) supplierTable.getModel();
+        for (int i=0;i<model.getRowCount();i++){    
+            model.removeRow(i);
+        }
+        addSupplierToTable(display.getSupplierList());
+        
+//        // Transaction
+//        model = (DefaultTableModel) transactionTable.getModel();
+//        for (int i=0;i<model.getRowCount();i++){    
+//            model.removeRow(i);
+//        }
+//        addTransactionToTable(display.getTransactionList());
+    }
+    
+    public void addTransactionToTable(ArrayList<Transaction> arr){
+        model = (DefaultTableModel) userTable.getModel();
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                "todo", 
+                arr.get(i).getUser().getName(),
+                arr.get(i).getItem().getName(),
+                arr.get(i).getNumbers()
+            });            
+        }
+    }
+    
+    public void addATKToTable(ArrayList<ATK> arr){
+        model = (DefaultTableModel) atkTable.getModel();
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                arr.get(i).getName(), 
+                Integer.toString(arr.get(i).getNumber())});            
+        }
+    }
+    
+    public void addUserToTable(ArrayList<User> arr){
+        model = (DefaultTableModel) userTable.getModel();
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                arr.get(i).getName(), 
+                arr.get(i).getType()
+            });            
+        }
+    }
+    
+    public void addOrderToTable(ArrayList<String> arr){
+        model = (DefaultTableModel) orderTable.getModel();
+        model.addRow(arr.toArray());
+    }
+    
+    public void addBookingToTable(ArrayList<String> arr){
+        model = (DefaultTableModel) bookingTable.getModel();
+        model.addRow(arr.toArray());
+    }
+    
+    public void addSupplierToTable(ArrayList<Supplier> arr){
+        model = (DefaultTableModel) supplierTable.getModel();
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                arr.get(i).getName()});            
+        }
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,20 +119,20 @@ public class ATKManager extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        transactionTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        bookingTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        orderTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -52,19 +141,19 @@ public class ATKManager extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        atkTable = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        supplierTable = new javax.swing.JTable();
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
+        userTable = new javax.swing.JTable();
         jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
@@ -74,15 +163,12 @@ public class ATKManager extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        transactionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "No", "Tanggal", "Nama", "Kategori", "ATK"
+                "No", "Tanggal", "Nama", "ATK", "Jumlah"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -93,12 +179,11 @@ public class ATKManager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setHeaderValue("Kategori");
+        transactionTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(transactionTable);
+        if (transactionTable.getColumnModel().getColumnCount() > 0) {
+            transactionTable.getColumnModel().getColumn(0).setResizable(false);
+            transactionTable.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jLabel1.setText("Tanggal");
@@ -146,12 +231,9 @@ public class ATKManager extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Pemakaian", jPanel1);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        bookingTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "No", "Tanggal", "Nama", "Kategori", "ATK"
@@ -165,12 +247,11 @@ public class ATKManager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable3.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-            jTable3.getColumnModel().getColumn(3).setHeaderValue("Kategori");
+        bookingTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(bookingTable);
+        if (bookingTable.getColumnModel().getColumnCount() > 0) {
+            bookingTable.getColumnModel().getColumn(0).setResizable(false);
+            bookingTable.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jLabel3.setText("Tanggal");
@@ -228,12 +309,9 @@ public class ATKManager extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Booking", jPanel6);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        orderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "No", "Tanggal", "Supplier", "ATK", "Status"
@@ -247,11 +325,11 @@ public class ATKManager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
+        orderTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(orderTable);
+        if (orderTable.getColumnModel().getColumnCount() > 0) {
+            orderTable.getColumnModel().getColumn(0).setResizable(false);
+            orderTable.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jLabel2.setText("Tanggal");
@@ -325,12 +403,9 @@ public class ATKManager extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("ATK"));
         jPanel4.setName(""); // NOI18N
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        atkTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "No", "Nama", "Stok"
@@ -344,7 +419,7 @@ public class ATKManager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane5.setViewportView(atkTable);
 
         jButton3.setText("Ubah");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -391,12 +466,9 @@ public class ATKManager extends javax.swing.JFrame {
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Supplier"));
         jPanel8.setName(""); // NOI18N
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        supplierTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "No", "Nama"
@@ -410,7 +482,7 @@ public class ATKManager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(supplierTable);
 
         jButton11.setText("Tambah");
 
@@ -455,12 +527,9 @@ public class ATKManager extends javax.swing.JFrame {
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Pengguna"));
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "No", "Nama", "Kategori"
@@ -474,10 +543,10 @@ public class ATKManager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane6.setViewportView(jTable6);
-        if (jTable6.getColumnModel().getColumnCount() > 0) {
-            jTable6.getColumnModel().getColumn(0).setResizable(false);
-            jTable6.getColumnModel().getColumn(1).setResizable(false);
+        jScrollPane6.setViewportView(userTable);
+        if (userTable.getColumnModel().getColumnCount() > 0) {
+            userTable.getColumnModel().getColumn(0).setResizable(false);
+            userTable.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jButton14.setText("Tambah");
@@ -552,7 +621,7 @@ public class ATKManager extends javax.swing.JFrame {
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Help");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -624,11 +693,6 @@ public class ATKManager extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ATKManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -639,6 +703,8 @@ public class ATKManager extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable atkTable;
+    private javax.swing.JTable bookingTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -668,7 +734,6 @@ public class ATKManager extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -678,11 +743,9 @@ public class ATKManager extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
+    private javax.swing.JTable orderTable;
+    private javax.swing.JTable supplierTable;
+    private javax.swing.JTable transactionTable;
+    private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
