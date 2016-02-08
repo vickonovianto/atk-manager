@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class DBHelper {
     Connection connection;
     
+    
     /**
      * Constructor for DBHelper class, which will create new connection to the database.
      */
