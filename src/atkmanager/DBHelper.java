@@ -54,4 +54,21 @@ public class DBHelper {
         }
         return result;
     }
+    
+    public void runUpdate(String query) {
+        Statement stmt = null;
+        ResultSet result = null;
+       
+        try {
+            if (!(stmt == null)){
+                stmt.close();
+            }
+        
+            stmt = this.getConnection().createStatement();
+            stmt.executeUpdate(query);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
