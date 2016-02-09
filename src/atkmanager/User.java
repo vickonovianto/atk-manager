@@ -10,6 +10,7 @@ package atkmanager;
  * @author adinb
  */
 public class User {
+    private int ID;
     private String name;
     private String type;
     
@@ -32,5 +33,13 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public int getID() {
+        return ID;
+    }
+    
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

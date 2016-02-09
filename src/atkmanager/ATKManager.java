@@ -6,6 +6,7 @@
 package atkmanager;
 
 import java.util.ArrayList;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -688,7 +689,7 @@ public class ATKManager extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {        
-            javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ATKManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
