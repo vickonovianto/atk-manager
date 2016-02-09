@@ -105,6 +105,20 @@ public class Display {
     }
 
     public ArrayList<Order> getOrderList() {
+        try {
+            int i = 1;
+            Order order;
+            ResultSet result = dbhelper.runQuery("select * from pengadaan join atk join penyedia");
+            
+            while (result.next()){
+                order = new Order(new Supplier(result.getString("penyedia.nama")), new ATK(result.getString("atk.nama"), 0), result.getInt("pengadaan.jumlah"), new Date());
+                orderList.add(order);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return orderList;
     }
     

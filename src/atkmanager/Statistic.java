@@ -32,5 +32,4 @@ public class Statistic {
         return yearlyStatistics;
     }
     
-    
 }

@@ -12,7 +12,7 @@ public class Order {
     private int numbers;
     private Date receivedDate;
 
-    public Order(Supplier supplier, ATK item, int number, Date orderDate, Date receivedDate) {
+    public Order(Supplier supplier, ATK item, int number, Date receivedDate) {
         this.supplier = supplier;
         this.item = item;
         this.numbers = numbers;

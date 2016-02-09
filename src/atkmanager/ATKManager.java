@@ -49,6 +49,13 @@ public class ATKManager extends javax.swing.JFrame {
         }
         addSupplierToTable(display.getSupplierList());
         
+        // Order
+        model = (DefaultTableModel) orderTable.getModel();
+        for (int i=0;i<model.getRowCount();i++){    
+            model.removeRow(i);
+        }
+        addOrderToTable(display.getOrderList());
+        
 //        // Transaction
 //        model = (DefaultTableModel) transactionTable.getModel();
 //        for (int i=0;i<model.getRowCount();i++){    
@@ -88,9 +95,15 @@ public class ATKManager extends javax.swing.JFrame {
         }
     }
     
-    public void addOrderToTable(ArrayList<String> arr){
+    public void addOrderToTable(ArrayList<Order> arr){
         model = (DefaultTableModel) orderTable.getModel();
-        model.addRow(arr.toArray());
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                arr.get(i).getReceivedDate(), 
+                arr.get(i).getSupplier().getName(),
+                arr.get(i).getItem().getName(),
+                "ok"});            
+        }
     }
     
     public void addBookingToTable(ArrayList<String> arr){

@@ -22,7 +22,7 @@ public class DBHelper {
     public DBHelper(){
         try{
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:atkmanager.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:/home/ical/atk-manager/atkmanager.db");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
