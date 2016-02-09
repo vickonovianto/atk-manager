@@ -8,16 +8,14 @@ import java.util.Date;
  */
 public class Order {
     private Supplier supplier;
-    private ATK atk;
-    private int number;
-    private Date orderDate;
+    private ATK item;
+    private int numbers;
     private Date receivedDate;
 
-    public Order(Supplier supplier, ATK atk, int number, Date orderDate, Date receivedDate) {
+    public Order(Supplier supplier, ATK item, int number, Date orderDate, Date receivedDate) {
         this.supplier = supplier;
-        this.atk = atk;
-        this.number = number;
-        this.orderDate = orderDate;
+        this.item = item;
+        this.numbers = numbers;
         this.receivedDate = receivedDate;
     }
 
@@ -29,28 +27,20 @@ public class Order {
         this.supplier = supplier;
     }
 
-    public ATK getAtk() {
-        return atk;
+    public ATK getItem() {
+        return item;
     }
 
-    public void setAtk(ATK atk) {
-        this.atk = atk;
+    public void setItem(ATK item) {
+        this.item = item;
     }
 
-    public int getNumber() {
-        return number;
+    public int getNumbers() {
+        return numbers;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setNumbers(int numbers) {
+        this.numbers = numbers;
     }
 
     public Date getReceivedDate() {

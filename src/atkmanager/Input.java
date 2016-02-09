@@ -34,10 +34,12 @@ public class Input {
     }
     
     public void AddTransaction(Transaction transaction){
-//        String sql = "INSERT INTO pesananATK (id_pemesan, id_atk, jumlah, tanggal_pesanan) VALUES (" + transaction.getUser().getID() + ", " + transaction.getType() + ");";
+        String sql = "INSERT INTO pesananATK (id_pemesan, id_atk, jumlah, tanggal_pesanan) VALUES (" + transaction.getUser().getID() + ", " + transaction.getItem().getID() + ", " + transaction.getNumbers() + ", " + transaction.getTransactionDate() + ");";
+        db.runUpdate(sql);
     }
     
     public void AddOrder(Order order){
-        
+        String sql = "INSERT INTO pengadaan (id_penyedia, id_atk, jumlah, tanggal_pengadaan) VALUES (" + order.getSupplier().getID() + ", " + order.getItem().getID() + ", " + order.getNumbers() + ", " + order.getReceivedDate() + ");";
+        db.runUpdate(sql);
     }
 }

@@ -10,6 +10,7 @@ package atkmanager;
  * @author adinb
  */
 public class Supplier {
+    private int ID;
     private String name;
 
     public String getName() {
@@ -24,5 +25,11 @@ public class Supplier {
         this.name = name;
     }
     
+    public int getID() {
+        return ID;
+    }
     
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 }
