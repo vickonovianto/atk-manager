@@ -42,4 +42,8 @@ public class User {
     public void setID(int ID) {
         this.ID = ID;
     }
+    
+    public static boolean isKategoriValid(String kategori){
+        return !(kategori.equals("Mahasiswa") || kategori.equals("Dosen") || kategori.equals("Staf"));
+    }
 }

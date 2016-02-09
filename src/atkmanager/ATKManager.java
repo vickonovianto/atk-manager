@@ -5,7 +5,13 @@
  */
 package atkmanager;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,7 +30,22 @@ public class ATKManager extends javax.swing.JFrame {
     public ATKManager() {
         initComponents();
         display = new Display();
+        setDate();
         refreshTable();
+    }
+    
+    public void setDate(){
+        final DateFormat dateFormat = new SimpleDateFormat("E, yyyy/MM/dd HH:mm:ss");
+        Calendar now = Calendar.getInstance();
+        jLabel1.setText(dateFormat.format(now.getTime()));
+        new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Calendar now = Calendar.getInstance();
+                jLabel1.setText(dateFormat.format(now.getTime()));
+            }
+        
+    }).start();
     }
     
     public final void refreshTable(){
