@@ -39,7 +39,7 @@ public class Display {
             ResultSet result = dbhelper.runQuery("select * from atk");
             ATK atk;
             while (result.next()){
-               atk = new ATK(result.getString("nama"), result.getInt("jumlah"));
+               atk = new ATK(result.getString("nama_atk"), result.getInt("jumlah_atk"));
                atkList.add(atk);
             }
 
@@ -57,7 +57,7 @@ public class Display {
             ResultSet result = dbhelper.runQuery("select * from pemesan");
             
             while (result.next()){
-                user = new User(result.getString("nama"), result.getString("kategori"));
+                user = new User(result.getString("nama_pemesan"), result.getString("kategori"));
                 userList.add(user);
             }
 
@@ -75,7 +75,7 @@ public class Display {
             ResultSet result = dbhelper.runQuery("select * from penyedia");
             
             while (result.next()){
-                supplier = new Supplier(result.getString("nama"));
+                supplier = new Supplier(result.getString("nama_penyedia"));
                 supplierList.add(supplier);
             }
 
@@ -93,7 +93,7 @@ public class Display {
             ResultSet result = dbhelper.runQuery("select * from pesananATK join atk join pemesan");
             
             while (result.next()){
-                transaction = new Transaction(new User(result.getString("pemesan.name"), result.getString("pemesan.kategori")), new ATK(result.getString("atk.name"),0), result.getInt("pesananATK.jumlah"), new Date());
+                transaction = new Transaction(new User(result.getString("nama_pemesan"), result.getString("kategori")), new ATK(result.getString("nama_atk"),0), result.getInt("jumlah"), new Date());
                 transactionList.add(transaction);
             }
 
@@ -105,6 +105,20 @@ public class Display {
     }
 
     public ArrayList<Order> getOrderList() {
+        try {
+            int i = 1;
+            Order order;
+            ResultSet result = dbhelper.runQuery("select * from pengadaan join atk join penyedia");
+            
+            while (result.next()){
+                order = new Order(new Supplier(result.getString("nama_penyedia")), new ATK(result.getString("nama_atk"), 0), result.getInt("jumlah"), new Date());
+                orderList.add(order);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return orderList;
     }
     

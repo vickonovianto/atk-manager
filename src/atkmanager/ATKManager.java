@@ -70,12 +70,19 @@ public class ATKManager extends javax.swing.JFrame {
         }
         addSupplierToTable(display.getSupplierList());
         
-//        // Transaction
-//        model = (DefaultTableModel) transactionTable.getModel();
-//        for (int i=0;i<model.getRowCount();i++){    
-//            model.removeRow(i);
-//        }
-//        addTransactionToTable(display.getTransactionList());
+        // Order
+        model = (DefaultTableModel) orderTable.getModel();
+        for (int i=0;i<model.getRowCount();i++){    
+            model.removeRow(i);
+        }
+        addOrderToTable(display.getOrderList());
+        
+        // Transaction
+        model = (DefaultTableModel) bookingTable.getModel();
+        for (int i=0;i<model.getRowCount();i++){    
+            model.removeRow(i);
+        }
+        addBookingToTable(display.getTransactionList());
     }
     
     public void addTransactionToTable(ArrayList<Transaction> arr){
@@ -109,14 +116,26 @@ public class ATKManager extends javax.swing.JFrame {
         }
     }
     
-    public void addOrderToTable(ArrayList<String> arr){
+    public void addOrderToTable(ArrayList<Order> arr){
         model = (DefaultTableModel) orderTable.getModel();
-        model.addRow(arr.toArray());
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                arr.get(i).getReceivedDate(), 
+                arr.get(i).getSupplier().getName(),
+                arr.get(i).getItem().getName(),
+                "ok"});            
+        }
     }
     
-    public void addBookingToTable(ArrayList<String> arr){
+    public void addBookingToTable(ArrayList<Transaction> arr){
         model = (DefaultTableModel) bookingTable.getModel();
-        model.addRow(arr.toArray());
+        for (int i=0;i<arr.size();i++){
+            model.addRow(new Object[]{Integer.toString(i+1), 
+                arr.get(i).getTransactionDate(), 
+                arr.get(i).getUser().getName(),
+                arr.get(i).getUser().getType(),
+                arr.get(i).getItem().getName()});            
+        }
     }
     
     public void addSupplierToTable(ArrayList<Supplier> arr){
