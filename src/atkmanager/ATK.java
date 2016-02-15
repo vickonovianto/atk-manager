@@ -10,9 +10,11 @@ public class ATK {
     private int number;
     private int supplierID;
 
-    public ATK(String name, int number, int supplierID) {
+    public ATK(int ID, String name, int number, int supplierID) {
+        this.ID = ID; 
         this.name = name;
         this.number = number;
+        this.supplierID = supplierID;
     }
     
    public String[] toArray(){

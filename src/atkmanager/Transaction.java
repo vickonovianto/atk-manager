@@ -11,14 +11,14 @@ public class Transaction {
     ATK item;
     int numbers;
     Date transactionDate;
-    int status;
+    int status; // 0: normal, 1: booked, 2: taken
 
-    public Transaction(User user, ATK item, int numbers, Date transactionDate) {
+    public Transaction(User user, ATK item, int numbers, Date transactionDate, int status) {
         this.user = user;
         this.item = item;
         this.numbers = numbers;
         this.transactionDate = transactionDate;
-        this.status = 0;
+        this.status = status;
     }
 
     public int getStatus() {

@@ -131,7 +131,7 @@ public class InputSupplier extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelSupplierActionPerformed
 
     private void okSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okSupplierActionPerformed
-        input.AddSupplier(new Supplier(jTextField1.getText()));
+        input.AddSupplier(jTextField1.getText());
         display.refreshList();
         atkmanager.refreshTable();
         InputSupplier.this.setVisible(false);

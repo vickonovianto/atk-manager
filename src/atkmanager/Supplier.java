@@ -21,8 +21,9 @@ public class Supplier {
         this.name = name;
     }
 
-    public Supplier(String name) {
+    public Supplier(int ID, String name) {
         this.name = name;
+        this.ID = ID;
     }
     
     public int getID() {

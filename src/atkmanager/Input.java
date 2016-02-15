@@ -18,18 +18,18 @@ package atkmanager;
 public class Input {
     DBHelper db = new DBHelper();
     
-    public void AddATK(ATK atk){
-        String sql =    "INSERT INTO ATK (nama_atk, jumlah_atk, id_penyedia) VALUES ('" + atk.getName() + "', " + atk.getNumber() + ", " + atk.getSupplierID() + ");";
+    public void AddATK(String nama_atk, int jumlah_atk, int id_penyedia){
+        String sql =    "INSERT INTO ATK (nama_atk, jumlah_atk, id_penyedia) VALUES ('" + nama_atk + "', " + jumlah_atk + ", " + id_penyedia + ");";
         db.runUpdate(sql);
     }
     
-    public void AddUser(User user){
-        String sql = "INSERT INTO pemesan (nama_pemesan, kategori) VALUES ('" + user.getName() + "', '" + user.getType() + "');";
+    public void AddUser(String nama_pemesan, String kategori){
+        String sql = "INSERT INTO pemesan (nama_pemesan, kategori) VALUES ('" + nama_pemesan + "', '" + kategori + "');";
         db.runUpdate(sql);
     }
     
-    public void AddSupplier(Supplier supplier){
-        String sql = "INSERT INTO penyedia (nama_penyedia) VALUES ('" + supplier.getName() + "');";
+    public void AddSupplier(String nama_penyedia){
+        String sql = "INSERT INTO penyedia (nama_penyedia) VALUES ('" + nama_penyedia + "');";
         db.runUpdate(sql);
     }
     
@@ -40,6 +40,21 @@ public class Input {
     
     public void AddOrder(Order order){
         String sql = "INSERT INTO pengadaan (id_penyedia, id_atk, jumlah, tanggal_pengadaan) VALUES (" + order.getSupplier().getID() + ", " + order.getItem().getID() + ", " + order.getNumbers() + ", " + order.getReceivedDate() + ");";
+        db.runUpdate(sql);
+    }
+    
+    public void DeleteUser(int id){
+        String sql = "DELETE FROM pemesan WHERE id_pemesan = " + id +";";
+        db.runUpdate(sql);
+    }
+
+    void DeleteATK(int id) {
+        String sql = "DELETE FROM atk WHERE id_atk = " + id +";";
+        db.runUpdate(sql);
+    }
+    
+    void DeleteSupplier(int id) {
+        String sql = "DELETE FROM penyedia WHERE id_penyedia = " + id +";";
         db.runUpdate(sql);
     }
 }

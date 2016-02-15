@@ -47,6 +47,9 @@ public class DBHelper {
             }
         
             stmt = this.getConnection().createStatement();
+            stmt.executeUpdate("PRAGMA foreign_keys = ON");
+            
+            stmt = this.getConnection().createStatement();
             result = stmt.executeQuery(query);
             
         } catch (SQLException ex) {
@@ -63,6 +66,9 @@ public class DBHelper {
             if (!(stmt == null)){
                 stmt.close();
             }
+            stmt = this.getConnection().createStatement();
+            stmt.executeUpdate("PRAGMA foreign_keys = ON");
+            
             stmt = this.getConnection().createStatement();
             System.out.println(query);
             stmt.executeUpdate(query);

@@ -144,8 +144,7 @@ public class InputATK extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void okATKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okATKActionPerformed
-        ATK atk = new ATK(jTextField1.getText(), Integer.parseInt(jTextField2.getText()), supplierCombo.getSelectedIndex());
-        input.AddATK(atk);
+        input.AddATK(jTextField1.getText(), Integer.parseInt(jTextField2.getText()), display.getSupplierIDByName(supplierCombo.getSelectedItem().toString()));
         display.refreshList();
         atkmanager.refreshTable();
         InputATK.this.setVisible(false);

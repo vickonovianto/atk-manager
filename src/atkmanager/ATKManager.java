@@ -42,11 +42,14 @@ public class ATKManager extends javax.swing.JFrame {
         final DateFormat dateFormat = new SimpleDateFormat("E, yyyy/MM/dd HH:mm:ss");
         Calendar now = Calendar.getInstance();
         jLabel1.setText(dateFormat.format(now.getTime()));
+        jLabel3.setText(dateFormat.format(now.getTime()));
         new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Calendar now = Calendar.getInstance();
                 jLabel1.setText(dateFormat.format(now.getTime()));
+                jLabel2.setText(dateFormat.format(now.getTime()));
+                jLabel3.setText(dateFormat.format(now.getTime()));
             }
         
     }).start();
@@ -74,36 +77,70 @@ public class ATKManager extends javax.swing.JFrame {
         addOrderToTable(display.getOrderList());
         
         // Transaction
+        model = (DefaultTableModel) transactionTable.getModel();
+        model.setRowCount(0);
+        addTransactionToTable(display.getTransactionList());
+        
+        // Booking
         model = (DefaultTableModel) bookingTable.getModel();
         model.setRowCount(0);
         addBookingToTable(display.getTransactionList());
     }
     
     public void addTransactionToTable(ArrayList<Transaction> arr){
-        model = (DefaultTableModel) userTable.getModel();
+        model = (DefaultTableModel) transactionTable.getModel();
+        System.out.println(arr.size());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         for (int i=0;i<arr.size();i++){
-            model.addRow(new Object[]{Integer.toString(i+1), 
-                "todo", 
-                arr.get(i).getUser().getName(),
-                arr.get(i).getItem().getName(),
-                arr.get(i).getNumbers()
-            });            
+            if (arr.get(i).getStatus() == 0){
+                model.addRow(new Object[]{Integer.toString(i+1), 
+                    formatter.format(arr.get(i).getTransactionDate()), 
+                    arr.get(i).getUser().getName(),
+                    arr.get(i).getItem().getName(),
+                    arr.get(i).getNumbers()
+                });            
+            }
+        }
+    }
+    
+    public void addBookingToTable(ArrayList<Transaction> arr){
+        model = (DefaultTableModel) bookingTable.getModel();
+        System.out.println(arr.size());
+        String status = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        for (int i=0;i<arr.size();i++){
+            if (arr.get(i).getStatus() == 1){
+                status = "Booking"; 
+            }
+            else if (arr.get(i).getStatus() == 2){
+                status = "Diambil";
+            }
+            if (arr.get(i).getStatus() != 0){
+                model.addRow(new Object[]{Integer.toString(i+1), 
+                    formatter.format(arr.get(i).getTransactionDate()), 
+                    arr.get(i).getUser().getName(),
+                    arr.get(i).getItem().getName(),
+                    arr.get(i).getNumbers(),
+                    status                    
+                });                            
+            }
         }
     }
     
     public void addATKToTable(ArrayList<ATK> arr){
         model = (DefaultTableModel) atkTable.getModel();
         for (int i=0;i<arr.size();i++){
-            model.addRow(new Object[]{Integer.toString(i+1), 
+            model.addRow(new Object[]{Integer.toString(arr.get(i).getID()), 
                 arr.get(i).getName(), 
-                Integer.toString(arr.get(i).getNumber())});            
+                Integer.toString(arr.get(i).getNumber()), 
+                display.getSupplierNameByID(arr.get(i).getSupplierID())});            
         }
     }
     
     public void addUserToTable(ArrayList<User> arr){
         model = (DefaultTableModel) userTable.getModel();
         for (int i=0;i<arr.size();i++){
-            model.addRow(new Object[]{Integer.toString(i+1), 
+            model.addRow(new Object[]{Integer.toString(arr.get(i).getID()), 
                 arr.get(i).getName(), 
                 arr.get(i).getType()
             });            
@@ -112,30 +149,21 @@ public class ATKManager extends javax.swing.JFrame {
     
     public void addOrderToTable(ArrayList<Order> arr){
         model = (DefaultTableModel) orderTable.getModel();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         for (int i=0;i<arr.size();i++){
             model.addRow(new Object[]{Integer.toString(i+1), 
-                arr.get(i).getReceivedDate(), 
+                formatter.format(arr.get(i).getReceivedDate()), 
                 arr.get(i).getSupplier().getName(),
                 arr.get(i).getItem().getName(),
                 "ok"});            
         }
     }
     
-    public void addBookingToTable(ArrayList<Transaction> arr){
-        model = (DefaultTableModel) bookingTable.getModel();
-        for (int i=0;i<arr.size();i++){
-            model.addRow(new Object[]{Integer.toString(i+1), 
-                arr.get(i).getTransactionDate(), 
-                arr.get(i).getUser().getName(),
-                arr.get(i).getUser().getType(),
-                arr.get(i).getItem().getName()});            
-        }
-    }
     
     public void addSupplierToTable(ArrayList<Supplier> arr){
         model = (DefaultTableModel) supplierTable.getModel();
         for (int i=0;i<arr.size();i++){
-            model.addRow(new Object[]{Integer.toString(i+1), 
+            model.addRow(new Object[]{Integer.toString(arr.get(i).getID()), 
                 arr.get(i).getName()});            
         }
     }
@@ -173,28 +201,38 @@ public class ATKManager extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        orderTable1 = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         atkTable = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         supplierTable = new javax.swing.JTable();
         jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ATK-Manager");
@@ -257,7 +295,7 @@ public class ATKManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -272,11 +310,11 @@ public class ATKManager extends javax.swing.JFrame {
 
             },
             new String [] {
-                "No", "Tanggal", "Nama", "Kategori", "ATK"
+                "No", "Tanggal", "Nama", "ATK", "Jumlah", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -334,7 +372,7 @@ public class ATKManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6)
@@ -364,8 +402,8 @@ public class ATKManager extends javax.swing.JFrame {
         orderTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(orderTable);
         if (orderTable.getColumnModel().getColumnCount() > 0) {
-            orderTable.getColumnModel().getColumn(0).setResizable(false);
-            orderTable.getColumnModel().getColumn(1).setResizable(false);
+            orderTable.getColumnModel().getColumn(3).setHeaderValue("ATK");
+            orderTable.getColumnModel().getColumn(4).setHeaderValue("Status");
         }
 
         jLabel2.setText("Tanggal");
@@ -412,7 +450,7 @@ public class ATKManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
@@ -423,15 +461,125 @@ public class ATKManager extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Pengadaan", jPanel5);
 
+        orderTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "No", "Nama ATK", "Jumlah"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        orderTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane7.setViewportView(orderTable1);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setText("Nama Pemesan");
+
+        jLabel5.setText("Bulan");
+
+        jLabel6.setText("Tahun");
+
+        jLabel7.setText("Statistik Penggunaan ATK berdasarkan Pemesan");
+
+        jLabel8.setText("Statistik Penggunaan ATK dalam 1 Tahun ");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel9.setText("Nama ATK");
+
+        jLabel10.setText("Total :");
+
+        jLabel11.setText("jLabel11");
+
+        jLabel12.setText("Tahun");
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 588, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel7)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel11))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel12))
+                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Statistik", jPanel2);
@@ -444,11 +592,11 @@ public class ATKManager extends javax.swing.JFrame {
 
             },
             new String [] {
-                "No", "Nama", "Stok"
+                "ID", "Nama", "Stok", "Penyedia"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -457,14 +605,12 @@ public class ATKManager extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(atkTable);
 
-        jButton3.setText("Ubah");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButton9.setText("Hapus");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButton9ActionPerformed(evt);
             }
         });
-
-        jButton9.setText("Hapus");
 
         jButton10.setText("Tambah");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -481,11 +627,9 @@ public class ATKManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 34, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -497,7 +641,6 @@ public class ATKManager extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
                     .addComponent(jButton9)
                     .addComponent(jButton10))
                 .addContainerGap())
@@ -511,7 +654,7 @@ public class ATKManager extends javax.swing.JFrame {
 
             },
             new String [] {
-                "No", "Nama"
+                "ID", "Nama"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -531,14 +674,12 @@ public class ATKManager extends javax.swing.JFrame {
             }
         });
 
-        jButton12.setText("Ubah");
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
+        jButton13.setText("Hapus");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
+                jButton13ActionPerformed(evt);
             }
         });
-
-        jButton13.setText("Hapus");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -548,10 +689,8 @@ public class ATKManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 30, Short.MAX_VALUE)
+                        .addGap(0, 93, Short.MAX_VALUE)
                         .addComponent(jButton11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
@@ -562,9 +701,8 @@ public class ATKManager extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton12)
                     .addComponent(jButton13)
                     .addComponent(jButton11))
                 .addContainerGap())
@@ -577,7 +715,7 @@ public class ATKManager extends javax.swing.JFrame {
 
             },
             new String [] {
-                "No", "Nama", "Kategori"
+                "ID", "Nama", "Kategori"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -601,14 +739,12 @@ public class ATKManager extends javax.swing.JFrame {
             }
         });
 
-        jButton15.setText("Ubah");
-        jButton15.addActionListener(new java.awt.event.ActionListener() {
+        jButton16.setText("Hapus");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton15ActionPerformed(evt);
+                jButton16ActionPerformed(evt);
             }
         });
-
-        jButton16.setText("Hapus");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -617,12 +753,10 @@ public class ATKManager extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton16)))
                 .addContainerGap())
@@ -632,9 +766,8 @@ public class ATKManager extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton15)
                     .addComponent(jButton16)
                     .addComponent(jButton14))
                 .addContainerGap())
@@ -667,14 +800,6 @@ public class ATKManager extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Manajemen", jPanel3);
-
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Help");
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -712,18 +837,6 @@ public class ATKManager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton12ActionPerformed
-
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton15ActionPerformed
-
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton17ActionPerformed
@@ -739,6 +852,24 @@ public class ATKManager extends javax.swing.JFrame {
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         new InputUser(input, display, this).setVisible(true);
     }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        input.DeleteATK(Integer.parseInt((String)atkTable.getValueAt(atkTable.getSelectedRow(), 0)));
+        display.refreshList();
+        refreshTable();
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        input.DeleteUser(Integer.parseInt((String)userTable.getValueAt(userTable.getSelectedRow(), 0)));
+        display.refreshList();
+        refreshTable();
+    }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        input.DeleteSupplier(Integer.parseInt((String)supplierTable.getValueAt(supplierTable.getSelectedRow(), 0)));
+        display.refreshList();
+        refreshTable();
+    }//GEN-LAST:event_jButton13ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -772,26 +903,34 @@ public class ATKManager extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -806,8 +945,10 @@ public class ATKManager extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable orderTable;
+    private javax.swing.JTable orderTable1;
     private javax.swing.JTable supplierTable;
     private javax.swing.JTable transactionTable;
     private javax.swing.JTable userTable;

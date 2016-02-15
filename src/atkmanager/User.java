@@ -14,9 +14,10 @@ public class User {
     private String name;
     private String type;
     
-    public User (String name, String type){
+    public User (int ID, String name, String type){
         this.name = name;
         this.type = type;
+        this.ID = ID;
     }
     
     public String getName() {

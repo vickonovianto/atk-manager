@@ -130,7 +130,7 @@ public class InputUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void okUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okUserActionPerformed
-        input.AddUser(new User(jTextField1.getText(), jComboBox1.getSelectedItem().toString()));
+        input.AddUser(jTextField1.getText(), jComboBox1.getSelectedItem().toString());
         display.refreshList();
         atkmanager.refreshTable();
         InputUser.this.setVisible(false);
