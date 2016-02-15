@@ -32,7 +32,7 @@ public class Display {
         supplierList = new ArrayList<>();
         transactionList = new ArrayList<>();
         orderList = new ArrayList<>();
-        dbhelper = new DBHelper();
+        dbhelper = DBHelper.getInstance();
     }
 
     public void refreshList(){
@@ -215,4 +215,78 @@ public class Display {
         return name;
     }
     
+    
+    public String[] getAtkNameList() {
+        ArrayList<String> atkNameArrayList = new ArrayList<String>();
+        try {
+            int i = 1;
+            ResultSet result = dbhelper.runQuery("select nama_atk from atk");
+            String name;
+            while (result.next()){
+               name = result.getString("nama_atk");
+               atkNameArrayList.add(name);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String[] atkNameList = new String[atkNameArrayList.size()];
+        atkNameList = atkNameArrayList.toArray(atkNameList);
+        return atkNameList;
+    }
+    
+    public String[] getUserNameList() {
+        ArrayList<String> userNameArrayList = new ArrayList<String>();
+        try {
+            ResultSet result = dbhelper.runQuery("select * from pemesan");
+            
+            while (result.next()){
+                userNameArrayList.add(result.getString("nama_pemesan"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String[] userNameList = new String[userNameArrayList.size()];
+        userNameList = userNameArrayList.toArray(userNameList);
+        return userNameList;
+    }
+    
+    public User getUserByName(String name){
+        User user = null;
+        
+        try {
+            ResultSet result = dbhelper.runQuery("select * from pemesan WHERE nama_pemesan = '" + name + "';");
+            
+            if (result.next()){
+               int id  = result.getInt("id_pemesan");
+               String kategori = result.getString("kategori");
+               user = new User(id, name, kategori);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return user;
+    }
+    
+    public ATK getAtkByName(String name){
+        ATK atk = null;
+        
+        try {
+            ResultSet result = dbhelper.runQuery("select * from atk WHERE nama_atk = '" + name + "';");
+            
+            if (result.next()){
+               atk = new ATK(result.getInt("id_atk"), name, result.getInt("jumlah_atk"), result.getInt("id_penyedia"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return atk;
+    }
 }

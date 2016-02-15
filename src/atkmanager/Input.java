@@ -6,6 +6,9 @@
 package atkmanager;
 
 //import java.sql.Connection;
+
+import java.text.SimpleDateFormat;
+
 //import java.sql.PreparedStatement;
 //import java.sql.SQLException;
 //import java.util.logging.Level;
@@ -16,7 +19,7 @@ package atkmanager;
  * @author adinb
  */
 public class Input {
-    DBHelper db = new DBHelper();
+    DBHelper db = DBHelper.getInstance();
     
     public void AddATK(String nama_atk, int jumlah_atk, int id_penyedia){
         String sql =    "INSERT INTO ATK (nama_atk, jumlah_atk, id_penyedia) VALUES ('" + nama_atk + "', " + jumlah_atk + ", " + id_penyedia + ");";
@@ -34,7 +37,8 @@ public class Input {
     }
     
     public void AddTransaction(Transaction transaction){
-        String sql = "INSERT INTO pesananATK (id_pemesan, id_atk, jumlah, tanggal_pesanan) VALUES (" + transaction.getUser().getID() + ", " + transaction.getItem().getID() + ", " + transaction.getNumbers() + ", " + transaction.getTransactionDate() + ");";
+        String date = new SimpleDateFormat("dd/MM/yyyy").format(transaction.getTransactionDate());
+        String sql = "INSERT INTO pesananATK (id_pemesan, id_atk, jumlah, tanggal_pesanan) VALUES (" + transaction.getUser().getID() + ", " + transaction.getItem().getID() + ", " + transaction.getNumbers() + ", " + date + ");";
         db.runUpdate(sql);
     }
     

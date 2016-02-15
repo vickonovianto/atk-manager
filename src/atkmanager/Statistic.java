@@ -17,7 +17,7 @@ public class Statistic {
     ArrayList <Integer> ids;
     
     public Statistic() {
-        db = new DBHelper();
+        db = DBHelper.getInstance();
     }
     
     public void itemUsageStatistics(int year, ATK item) {

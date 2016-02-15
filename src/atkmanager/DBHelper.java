@@ -15,17 +15,25 @@ import java.util.logging.Logger;
 public class DBHelper {
     Connection connection;
     
-    
-    /**
-     * Constructor for DBHelper class, which will create new connection to the database.
-     */
-    public DBHelper(){
+    private static DBHelper dbhelper = new DBHelper( );
+   
+   /* A private Constructor prevents any other 
+    * class from instantiating.
+    */
+   private DBHelper(){ 
         try{
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:atkmanager.db");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
+   }
+    
+    /**
+     * Constructor for DBHelper class, which will create new connection to the database.
+     */
+    public static DBHelper getInstance(){
+        return dbhelper;
     }
     
     public Connection getConnection(){
