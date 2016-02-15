@@ -63,8 +63,8 @@ public class DBHelper {
             if (!(stmt == null)){
                 stmt.close();
             }
-        
             stmt = this.getConnection().createStatement();
+            System.out.println(query);
             stmt.executeUpdate(query);
             
         } catch (SQLException ex) {

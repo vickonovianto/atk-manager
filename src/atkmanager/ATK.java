@@ -10,7 +10,7 @@ public class ATK {
     private int number;
     private int supplierID;
 
-    public ATK(String name, int number) {
+    public ATK(String name, int number, int supplierID) {
         this.name = name;
         this.number = number;
     }

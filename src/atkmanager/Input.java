@@ -19,17 +19,17 @@ public class Input {
     DBHelper db = new DBHelper();
     
     public void AddATK(ATK atk){
-        String sql = "INSERT INTO ATK (Nama, Jumlah, IDPenyedia) VALUES (" + atk.getName() + ", " + atk.getNumber() + ", " + atk.getSupplierID() + ");";
+        String sql =    "INSERT INTO ATK (nama_atk, jumlah_atk, id_penyedia) VALUES ('" + atk.getName() + "', " + atk.getNumber() + ", " + atk.getSupplierID() + ");";
         db.runUpdate(sql);
     }
     
     public void AddUser(User user){
-        String sql = "INSERT INTO pemesan (nama, kategori) VALUES (" + user.getName() + ", " + user.getType() + ");";
+        String sql = "INSERT INTO pemesan (nama_pemesan, kategori) VALUES ('" + user.getName() + "', '" + user.getType() + "');";
         db.runUpdate(sql);
     }
     
     public void AddSupplier(Supplier supplier){
-        String sql = "INSERT INTO penyedia (nama) VALUES (" + supplier.getName() + ");";
+        String sql = "INSERT INTO penyedia (nama_penyedia) VALUES ('" + supplier.getName() + "');";
         db.runUpdate(sql);
     }
     

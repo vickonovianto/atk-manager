@@ -33,13 +33,21 @@ public class Display {
         dbhelper = new DBHelper();
     }
 
+    public void refreshList(){
+        atkList = getAtkList();
+        userList = getUserList();
+        supplierList = getSupplierList();
+        transactionList = getTransactionList();
+        orderList = getOrderList();
+    }
     public ArrayList<ATK> getAtkList() {
+        atkList = new ArrayList<>();
         try {
             int i = 1;
             ResultSet result = dbhelper.runQuery("select * from atk");
             ATK atk;
             while (result.next()){
-               atk = new ATK(result.getString("nama_atk"), result.getInt("jumlah_atk"));
+               atk = new ATK(result.getString("nama_atk"), result.getInt("jumlah_atk"), result.getInt("id_penyedia"));
                atkList.add(atk);
             }
 
@@ -51,6 +59,7 @@ public class Display {
     }
 
     public ArrayList<User> getUserList() {
+        userList = new ArrayList<>();
         try {
             int i = 1;
             User user;
@@ -69,6 +78,7 @@ public class Display {
     }
 
     public ArrayList<Supplier> getSupplierList() {
+        supplierList = new ArrayList<>();
         try {
             int i = 1;
             Supplier supplier;
@@ -87,13 +97,14 @@ public class Display {
     }
 
     public ArrayList<Transaction> getTransactionList() {
+        transactionList = new ArrayList<>();
         try {
             int i = 1;
             Transaction transaction;
             ResultSet result = dbhelper.runQuery("select * from pesananATK join atk join pemesan");
             
             while (result.next()){
-                transaction = new Transaction(new User(result.getString("nama_pemesan"), result.getString("kategori")), new ATK(result.getString("nama_atk"),0), result.getInt("jumlah"), new Date());
+                transaction = new Transaction(new User(result.getString("nama_pemesan"), result.getString("kategori")), new ATK(result.getString("nama_atk"),0,0), result.getInt("jumlah"), new Date());
                 transactionList.add(transaction);
             }
 
@@ -105,13 +116,14 @@ public class Display {
     }
 
     public ArrayList<Order> getOrderList() {
+        orderList = new ArrayList<>();
         try {
             int i = 1;
             Order order;
             ResultSet result = dbhelper.runQuery("select * from pengadaan join atk join penyedia");
             
             while (result.next()){
-                order = new Order(new Supplier(result.getString("nama_penyedia")), new ATK(result.getString("nama_atk"), 0), result.getInt("jumlah"), new Date());
+                order = new Order(new Supplier(result.getString("nama_penyedia")), new ATK(result.getString("nama_atk"), 0, 0), result.getInt("jumlah"), new Date());
                 orderList.add(order);
             }
 
